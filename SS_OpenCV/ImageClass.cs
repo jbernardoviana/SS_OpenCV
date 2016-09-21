@@ -32,7 +32,6 @@ namespace SS_OpenCV
         /// 
         internal static void NegativeMemory(Image<Bgr, byte> img)
         {
-            int x;
             unsafe
             {
                 // direct access to the image memory(sequencial)
