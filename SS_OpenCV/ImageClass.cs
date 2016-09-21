@@ -28,10 +28,11 @@ namespace SS_OpenCV
             }
         }
         
-        /// Negative using memory
+        /// Negative using memory (faster processing)
         /// 
         internal static void NegativeMemory(Image<Bgr, byte> img)
         {
+            int x;
             unsafe
             {
                 // direct access to the image memory(sequencial)
