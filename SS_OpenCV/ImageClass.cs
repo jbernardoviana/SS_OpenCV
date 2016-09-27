@@ -27,7 +27,7 @@ namespace SS_OpenCV
                 }
             }
         }
-        
+
         /// Negative using memory (faster processing)
         /// 
         internal static void NegativeMemory(Image<Bgr, byte> img)
@@ -62,7 +62,7 @@ namespace SS_OpenCV
                             blue = (byte)(255 - (int)blue);
                             red = (byte)(255 - (int)red);
                             green = (byte)(255 - (int)green);
-                    
+
                             // store in the image
                             dataPtr[0] = blue;
                             dataPtr[1] = green;
@@ -100,7 +100,7 @@ namespace SS_OpenCV
                 int nChan = m.nChannels; // number of channels - 3
                 int padding = m.widthStep - m.nChannels * m.width; // alinhament bytes (padding)
                 int x, y;
-                        
+
                 if (nChan == 3) // image in RGB
                 {
                     for (y = 0; y < height; y++)
@@ -131,7 +131,50 @@ namespace SS_OpenCV
             }
         }
 
+        internal static void BlueComponent(Image<Bgr, byte> img)
+        {
+            unsafe
+            {
+                // direct access to the image memory(sequencial)
+                // direcion top left -> bottom right
+
+                MIplImage m = img.MIplImage;
+                byte* dataPtr = (byte*)m.imageData.ToPointer(); // Pointer to the image
+                byte blue, green, red, gray;
 
 
+                int width = img.Width;
+                int height = img.Height;
+                int nChan = m.nChannels; // number of channels - 3
+                int padding = m.widthStep - m.nChannels * m.width; // alinhament bytes (padding)
+                int x, y;
+
+                if (nChan == 3) // image in RGB
+                {
+                    for (y = 0; y < height; y++)
+                    {
+                        for (x = 0; x < width; x++)
+                        {
+                            //obtém as 3 componentes
+                            blue = dataPtr[0];
+                            green = dataPtr[1];
+                            red = dataPtr[2];
+
+                            // copy the blue component to other components
+                            // store in the image
+                            dataPtr[0] = blue;
+                            dataPtr[1] = blue;
+                            dataPtr[2] = blue;
+
+                            // advance the pointer to the next pixel
+                            dataPtr += nChan;
+                        }
+
+                        //at the end of the line advance the pointer by the aligment bytes (padding)
+                        dataPtr += padding;
+                    }
+                }
+            }
+        }
     }
 }
