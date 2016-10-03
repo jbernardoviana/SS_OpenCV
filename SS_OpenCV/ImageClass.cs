@@ -188,7 +188,7 @@ namespace SS_OpenCV
         /// Translation of an image
         /// </summary>
         /// <param name="img"></param>
-        internal static void TranslationImg(Image<Bgr, byte> img)
+       /*internal static void TranslationImg(Image<Bgr, byte> img)
         {
             unsafe
             {
@@ -243,6 +243,6 @@ namespace SS_OpenCV
                     dataPtr += padding;
                 }
             }
-        }
+        }*/
     }
 }
