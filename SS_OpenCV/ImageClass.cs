@@ -131,6 +131,10 @@ namespace SS_OpenCV
             }
         }
 
+        /// <summary>
+        /// Add the value of the blue component to all the other components, produces a gray
+        /// </summary>
+        /// <param name="img"></param>
         internal static void BlueComponent(Image<Bgr, byte> img)
         {
             unsafe
@@ -173,6 +177,70 @@ namespace SS_OpenCV
                         //at the end of the line advance the pointer by the aligment bytes (padding)
                         dataPtr += padding;
                     }
+                }
+            }
+        }
+
+
+        /// AULA PRATICA 2
+
+        /// <summary>
+        /// Translation of an image
+        /// </summary>
+        /// <param name="img"></param>
+        internal static void TranslationImg(Image<Bgr, byte> img)
+        {
+            unsafe
+            {
+                // direct access to the image memory(sequencial)
+                // direcion top left -> bottom right
+
+                // Imagem de Escrita/Destino
+                MIplImage m = img.MIplImage;
+                byte* dataPtr = (byte*)m.imageData.ToPointer(); // Pointer to the image
+                byte blue, green, red, gray;
+
+                // Imagem de Leitura/Origem
+                Image<Bgr, byte> imgCopy = img.Copy();
+                MIplImage m2 = imgCopy.MIplImage;
+
+                byte* dataPtr2 = (byte*)m2.imageData.ToPointer();
+                byte blue2, green2, red2;
+
+                // Parametros img Destino
+                int width = img.Width;
+                int height = img.Height;
+                int nChan = m.nChannels; // number of channels - 3
+                int padding = m.widthStep - m.nChannels * m.width; // alinhament bytes (padding)
+                int ws = m.widthStep;
+                int x, y;
+
+                // Percorrer a imagem Origem
+                for (y = 0; y < height; y++)
+                {
+                    for (x = 0; x < width; x++)
+                    { // get pixel address blue = (byte)(dataPtr + y * widthstep + x * nC)[0];
+                        blue2 = (byte)(dataPtr2 + y * ws + x * nChan)[0];
+                        green2 = (byte)(dataPtr2 + y * ws + x * nChan)[1];
+                        red2 = (byte)(dataPtr2 + y * ws + x * nChan)[2];
+                    }
+                }
+
+                // Percorrer a imagem Destino
+                for (y = 0; y < height; y++)
+                {
+                    for (x = 0; x < width; x++)
+                    {
+                        //obtém as 3 componentes
+                        dataPtr[0] = blue2;
+                        dataPtr[1] = green2;
+                        dataPtr[2] = red2;
+
+                        // advance dataptr pixel by pixel dataPtr += nC; }
+                        dataPtr += nChan;
+                    }
+                    //at the end of the line advance the padding dataPtr += padding; }
+                    dataPtr += padding;
                 }
             }
         }

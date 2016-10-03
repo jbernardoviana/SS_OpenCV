@@ -188,7 +188,7 @@ namespace SS_OpenCV
 
 
         /// <summary>
-        /// Displays only the blue component of the image
+        /// Displays only the blue component of the image in all the other 2 components
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -202,6 +202,29 @@ namespace SS_OpenCV
             imgUndo = img.Copy();
 
             ImageClass.BlueComponent(img);
+
+            ImageViewer.Image = img.Bitmap;
+            ImageViewer.Refresh(); // refresh image on the screen
+
+            Cursor = Cursors.Default; // normal cursor 
+        }
+
+
+        /// <summary>
+        /// translation of the image
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void translationToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (img == null) // verify if the image is already opened
+                return;
+            Cursor = Cursors.WaitCursor; // clock cursor 
+
+            //copy Undo Image
+            imgUndo = img.Copy();
+
+            ImageClass.TranslationImg(img);
 
             ImageViewer.Image = img.Bitmap;
             ImageViewer.Refresh(); // refresh image on the screen
